@@ -19,7 +19,8 @@ namespace AGL_ProgrammingChallenge.Controllers
             foreach (var item in RestClient.GetAll())
             {
                 model.Add(item);
-            }     
+            }  
+            // grouping list by gender i.e "Male or Female"
             var groupedModel = model
                                 .GroupBy(u => u.gender)                                
                                 .Select(grp => new
@@ -32,7 +33,7 @@ namespace AGL_ProgrammingChallenge.Controllers
                                 })  
                                 .OrderBy(mc => mc.petList.Min(dc => dc.name))
                                 .ToList();
-
+            // ordering list by pet name in ascending order
             foreach(var item in groupedModel)
             {
                 PetOutput petOutput = new PetOutput();
