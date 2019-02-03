@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AGL_ProgrammingChallenge.Helper;
+using AGL_ProgrammingChallenge.Models;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +11,36 @@ namespace AGL_ProgrammingChallenge.Controllers
 {
     public class HomeController : Controller
     {
+        static readonly IWebServiceRestClient RestClient = new WebServiceRestClient();
         public ActionResult Index()
         {
-            return View();
+            List<PetModel> model = new List<PetModel>();
+            List<PetOutput> outputModel = new List<PetOutput>();          
+            foreach (var item in RestClient.GetAll())
+            {
+                model.Add(item);
+            }     
+            var groupedModel = model
+                                .GroupBy(u => u.gender)                                
+                                .Select(grp => new
+                                {
+                                gender = grp.Key,
+                                 petList= grp
+                                 .Where(pList => pList.pets != null)
+                                 .SelectMany(pList => pList.pets)                                 
+                                 .ToList()
+                                })  
+                                .OrderBy(mc => mc.petList.Min(dc => dc.name))
+                                .ToList();
+
+            foreach(var item in groupedModel)
+            {
+                PetOutput petOutput = new PetOutput();
+                petOutput.OwnerGender = item.gender;
+                petOutput.pets = item.petList.OrderBy(o => o.name).ToList();              
+                outputModel.Add(petOutput);
+            }
+            return View(outputModel);
         }
 
         public ActionResult About()

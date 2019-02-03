@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.list-group-hover .list-group-item:hover {
+    background-color: #0094ff;
+}

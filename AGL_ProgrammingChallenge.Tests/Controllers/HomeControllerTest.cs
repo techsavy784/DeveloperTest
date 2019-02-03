@@ -6,12 +6,29 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AGL_ProgrammingChallenge;
 using AGL_ProgrammingChallenge.Controllers;
+using AGL_ProgrammingChallenge.Models;
+using AGL_ProgrammingChallenge.Helper;
 
 namespace AGL_ProgrammingChallenge.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest
     {
+
+        [TestMethod]
+        public void FetchDataFromWebService()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            
+            IWebServiceRestClient RestClient = new WebServiceRestClient();
+            // Assert
+            Assert.IsNotNull(RestClient.GetAll());
+          
+        }
+
         [TestMethod]
         public void Index()
         {
