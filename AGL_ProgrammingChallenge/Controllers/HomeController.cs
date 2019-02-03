@@ -41,7 +41,7 @@ namespace AGL_ProgrammingChallenge.Controllers
                 petOutput.pets = item.petList.OrderBy(o => o.name).ToList();              
                 outputModel.Add(petOutput);
             }
-            return View(outputModel);
+            return View(outputModel); 
         }
 
         public ActionResult About()
